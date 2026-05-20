@@ -3,40 +3,132 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&display=swap');
+
   * { box-sizing: border-box; margin: 0; padding: 0; }
+
   body {
-    background: #000;
+    background: #F5F0E8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .panel {
+    width: 380px;
+    background: #FDFAF4;
+    border: 0.5px solid #C9A84C;
+    padding: 3rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2.5rem;
+  }
+
+  .logo-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 22px;
+    font-weight: 400;
+    letter-spacing: 0.45em;
+    color: #2a2015;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  .divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .divider-line { flex: 1; height: 0.5px; background: #C9A84C; }
+
+  .divider-diamond {
+    width: 5px;
+    height: 5px;
+    background: #C9A84C;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  .buttons {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .btn {
+    width: 130px;
+    height: 70px;
+    background: transparent;
+    border: 0.5px solid #C9A84C;
+    cursor: pointer;
+    transition: background 0.25s ease, border-color 0.25s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
-    gap: 40px;
-    font-family: -apple-system, sans-serif;
-  }
-  button {
-    width: 280px;
-    height: 120px;
-    border-radius: 20px;
-    border: none;
-    font-size: 36px;
-    font-weight: bold;
-    color: white;
-    cursor: pointer;
+    gap: 4px;
     -webkit-tap-highlight-color: transparent;
   }
-  #prev { background: #333; }
-  #next { background: #C9A84C; }
-  #status {
-    color: #666;
-    font-size: 14px;
+
+  .btn:hover { background: rgba(201,168,76,0.1); border-color: #8a7340; }
+  .btn:active { background: rgba(201,168,76,0.2); transform: scale(0.98); }
+
+  .btn-arrow {
+    font-size: 18px;
+    color: #C9A84C;
+    line-height: 1;
+  }
+
+  .btn-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #C9A84C;
+  }
+
+  .footer {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 11px;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: #b8a878;
+    text-transform: uppercase;
   }
 </style>
 </head>
 <body>
-<div id="status">En attente...</div>
-<button id="prev" onclick="sendCommand('prev')">← Précédent</button>
-<button id="next" onclick="sendCommand('next')">Suivant →</button>
+
+<div class="panel">
+  <div class="logo-title">Interface Demo</div>
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="buttons">
+    <button class="btn" onclick="sendCommand('prev')">
+      <span class="btn-arrow">&#8592;</span>
+      <span class="btn-label">Previous</span>
+    </button>
+    <button class="btn" onclick="sendCommand('next')">
+      <span class="btn-arrow">&#8594;</span>
+      <span class="btn-label">Next</span>
+    </button>
+  </div>
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-diamond"></div>
+    <div class="divider-line"></div>
+  </div>
+  <div class="footer">Poste numéro 42</div>
+</div>
+
 <script>
   var PLAYER_IP = '172.21.1.68';
   var PORT = '1234';
@@ -44,14 +136,9 @@
   function sendCommand(cmd) {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'http://' + PLAYER_IP + ':' + PORT + '/update?slideCommand=' + cmd, true);
-    xhr.onload = function() {
-      document.getElementById('status').textContent = cmd === 'next' ? '→ Suivant envoyé' : '← Précédent envoyé';
-    };
-    xhr.onerror = function() {
-      document.getElementById('status').textContent = 'Erreur de connexion';
-    };
     xhr.send();
   }
 </script>
+
 </body>
 </html>
